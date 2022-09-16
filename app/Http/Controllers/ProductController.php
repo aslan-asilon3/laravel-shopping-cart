@@ -4,28 +4,64 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 
 {
 
-    /**
-
-     * Write code on Method
-
-     *
-
-     * @return response()
-
-     */
-
     public function index()
 
     {
+        // $items = TravelPackage::all();
+        $products = Product::latest()->paginate(10);
 
-        $products = Product::all();
+        return view('pages.admin.product.index', compact('products'));
 
-        return view('products', compact('products'));
+    }
+
+    public function create()
+    {
+        return view('pages.admin.product.create');
+    }
+
+    public function store(Request $request)
+    {
+        $this->validate($request, [
+            'name'     => 'required',
+            'quantity'     => 'required',
+            'description'   => 'required',
+            'price'   => 'required',
+            'image'     => 'required|image|mimes:png,jpg,jpeg',
+        ]);
+
+        //upload image
+        $image = $request->file('image');
+        $image->storeAs('public/products', $image->hashName());
+
+        $product = Product::create([
+            'name'     => $request->name,
+            'quantity'   => $request->quantity,
+            'description'   => $request->description,
+            'price'   => $request->price,
+            'image'     => $image->hashName(),
+        ]);
+
+        if($product){
+            //redirect dengan pesan sukses
+            return redirect()->route('product.index')->with(['success' => 'Data Berhasil Disimpan!']);
+        }else{
+            //redirect dengan pesan error
+            return redirect()->route('product.index')->with(['error' => 'Data Gagal Disimpan!']);
+        }
+    }
+
+
+
+    public function show()
+
+    {
+        
 
     }
 

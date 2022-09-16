@@ -16,19 +16,24 @@ use App\Http\Controllers\ProductController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('layouts.app-landing-page');
 });
 
 
-Route::get('product', [ProductController::class, 'index']);  
+// Route::get('product', [ProductController::class, 'index']);  
 
-Route::get('product/cart', [ProductController::class, 'cart'])->name('cart');
+// Route::get('product/cart', [ProductController::class, 'cart'])->name('cart');
 
-Route::get('product/add-to-cart/{id}', [ProductController::class, 'addToCart'])->name('add.to.cart');
+// Route::get('product/add-to-cart/{id}', [ProductController::class, 'addToCart'])->name('add.to.cart');
 
-Route::patch('product/update-cart', [ProductController::class, 'update'])->name('update.cart');
+// Route::patch('product/update-cart', [ProductController::class, 'update'])->name('update.cart');
 
-Route::delete('product/remove-from-cart', [ProductController::class, 'remove'])->name('remove.from.cart');
-Auth::routes();
+// Route::delete('product/remove-from-cart', [ProductController::class, 'remove'])->name('remove.from.cart');
+// Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+    // =====Data Product
+    Route::resource('product', ProductController::class);
+    // =====End Product
